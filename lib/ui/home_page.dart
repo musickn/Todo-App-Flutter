@@ -188,19 +188,19 @@ class _HomePageState extends State<HomePage> {
         _buildToggleButton(
           context: context,
           text: "All",
-          onPressed: () {},
+          onPressed: () {setState(() {_filter = null;});},
           focus: _filter == null,
         ),
         _buildToggleButton(
           context: context,
           text: "Active",
-          onPressed: () {},
+          onPressed: () {setState(() {_filter = true;});},
           focus: _filter == true,
         ),
         _buildToggleButton(
           context: context,
           text: "Completed",
-          onPressed: () {},
+          onPressed: () {setState(() {_filter = false;});},
           focus: _filter == false,
         ),
       ],
