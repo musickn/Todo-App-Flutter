@@ -244,13 +244,14 @@ class _HomePageState extends State<HomePage> {
           return _buildListTile(
             context: context,
             item: _items[i],
+            index: i,
           );
         },
       ),
     );
   }
 
-  Widget _buildListTile({@required BuildContext context, TodoItem item}) {
+  Widget _buildListTile({@required BuildContext context, TodoItem item, int index}) {
     return InkWell(
       onTap: () {
       },
@@ -286,6 +287,7 @@ class _HomePageState extends State<HomePage> {
             color: Colors.red,
           ),
           onPressed: () {
+            _promptRemoveTodoItem(index);
           },
         ),
       ),
@@ -377,12 +379,40 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
-  
+
   void _addTodoItem(String task) {
     // Only add the task if the user actually entered something
     if (task.length > 0) {
       setState(() => _items.add(TodoItem(title: task)));
     }
+  }
+
+  void _removeTodoItem(int index) {
+    setState(() => _items.removeAt(index));
+  }
+  // Show an alert dialog asking the user to confirm that the task is done
+  void _promptRemoveTodoItem(int index) {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+              title: new Text('Remove "${_items[index].title}" from to-do list?'),
+              actions: <Widget>[
+                new FlatButton(
+                    child: new Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()
+                ),
+                new FlatButton(
+                    child: new Text('REMOVE', style: TextStyle(color: Colors.red),),
+                    onPressed: () {
+                      _removeTodoItem(index);
+                      Navigator.of(context).pop();
+                    }
+                )
+              ]
+          );
+        }
+    );
   }
 
 }
