@@ -262,10 +262,9 @@ class _HomePageState extends State<HomePage> {
           decoration: BoxDecoration(
               shape: BoxShape.circle, border: Border.all(color: Colors.grey)),
           child: Opacity(
-            child: Icon(
-              Icons.done,
-              color: Colors.green,
-            ),
+            child: IconButton(
+                icon: Icon(Icons.done, color: Colors.green),
+                onPressed: (){ _markComplete(index);}),
             opacity: item.isCompleted ? 1 : 0,
           ),
         ),
@@ -413,6 +412,12 @@ class _HomePageState extends State<HomePage> {
           );
         }
     );
+  }
+  void _markComplete(int index) {
+//    Whenever user click the circle button, Check becomes uncheck and vice versa.
+    setState(() {
+      _items[index].isCompleted = !_items[index].isCompleted;
+    });
   }
 
 }
