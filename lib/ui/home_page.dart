@@ -335,7 +335,7 @@ class _HomePageState extends State<HomePage> {
                     .copyWith(color: Colors.grey),
               ),
               onPressed: () {
-               
+                _confirmClearCompleted();
               },
             ),
           ),
@@ -389,7 +389,7 @@ class _HomePageState extends State<HomePage> {
   void _removeTodoItem(int index) {
     setState(() => _items.removeAt(index));
   }
-  // Show an alert dialog asking the user to confirm that the task is done
+
   void _promptRemoveTodoItem(int index) {
     showDialog(
         context: context,
@@ -413,6 +413,40 @@ class _HomePageState extends State<HomePage> {
         }
     );
   }
+
+  void _confirmClearCompleted() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+              title: new RichText(
+                  text: TextSpan(style: Theme.of(context).textTheme.body1.copyWith(fontSize: 16),
+                      children: [
+                        TextSpan(
+                            text: 'Are you sure you want to'),
+                        TextSpan(
+                            text: ' remove completed to-do lists',
+                            style: TextStyle(color: Colors.redAccent)),
+                        TextSpan(text: ' ?')
+                      ])),
+              actions: <Widget>[
+                new FlatButton(
+                    child: new Text('CANCEL'),
+                    onPressed: () => Navigator.of(context).pop()
+                ),
+                new FlatButton(
+                    child: new Text('CLEAR', style: TextStyle(color: Colors.red),),
+                    onPressed: () {
+                      _clearCompleted();
+                      Navigator.of(context).pop();
+                    }
+                )
+              ]
+          );
+        }
+    );
+  }
+
   void _markComplete(int index) {
 //    Whenever user click the circle button, Check becomes uncheck and vice versa.
     setState(() {
@@ -420,6 +454,11 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  void _clearCompleted() {
+    setState(() {
+      _items.removeWhere((item) => item.isCompleted == true);
+    });
+  }
 }
 
 class TodoItem {
