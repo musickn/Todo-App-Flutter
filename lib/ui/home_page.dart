@@ -382,8 +382,32 @@ class _HomePageState extends State<HomePage> {
   void _addTodoItem(String task) {
     // Only add the task if the user actually entered something
     if (task.length > 0) {
-      setState(() => _items.add(TodoItem(title: task)));
+      setState(() {
+        _items.add(TodoItem(title: task));
+        _titleController.text = '';
+      });
+    } else {
+      _fillSomeData();
     }
+  }
+
+  void _fillSomeData() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return new AlertDialog(
+              title: new Text('Please fill some data !'),
+              actions: <Widget>[
+                new FlatButton(
+                    child: new Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    }
+                )
+              ]
+          );
+        }
+    );
   }
 
   void _removeTodoItem(int index) {
@@ -395,7 +419,7 @@ class _HomePageState extends State<HomePage> {
         context: context,
         builder: (BuildContext context) {
           return new AlertDialog(
-              title: new Text('Remove "${_items[index].title}" from to-do list?'),
+              title: new Text('Remove "${_items[index].title}" from to-do lists?'),
               actions: <Widget>[
                 new FlatButton(
                     child: new Text('CANCEL'),
