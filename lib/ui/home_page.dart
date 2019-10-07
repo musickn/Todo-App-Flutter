@@ -371,11 +371,18 @@ class _HomePageState extends State<HomePage> {
             minWidth: 65.0,
             child: Icon(Icons.add, color: Colors.white),
             color: Color(0xFFFF4954),
-            onPressed: (){},
+            onPressed: (){_addTodoItem(_titleController.text.trim());},
           ),
         ),
       ],
     );
+  }
+  
+  void _addTodoItem(String task) {
+    // Only add the task if the user actually entered something
+    if (task.length > 0) {
+      setState(() => _items.add(TodoItem(title: task)));
+    }
   }
 
 }
